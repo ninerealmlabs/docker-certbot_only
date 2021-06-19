@@ -6,12 +6,13 @@ name: Publish to DockerHub
 # documentation.
 
 on:
-#   push:
-#     branches: [ main ]
-  pull_request:
+  push:
     branches: [ main ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ main ]
+
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -41,11 +42,10 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=sha
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-#            type=ref,event=pr
-#            type=ref,event=tag
+            type=ref,event=pr
+#             type=sha
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
