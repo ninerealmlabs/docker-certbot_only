@@ -5,8 +5,10 @@ ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG BUILD_DATE
 
-LABEL build_version="${TARGETPLATFORM} - ${BUILD_DATE}"
+LABEL platform="${TARGETPLATFORM} - ${TARGETARCH}"
+LABEL build_date="${BUILD_DATE}"
 LABEL maintainer="ninerealmlabs"
+LABEL description="Docker image useful to run certbot and persist certificates"
 
 ENV ONLY_SUBDOMAINS=false
 ENV PROPAGATION=60
@@ -60,7 +62,7 @@ RUN mkdir -p \
     /config \
     /defaults \
     /letsencrypt
-    
+
 # VOLUME /config
 # VOLUME /letsencrypt
 
