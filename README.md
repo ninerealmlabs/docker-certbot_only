@@ -1,7 +1,8 @@
 # Certbot_Only
 
-[![Docker Image CI](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-image.yml)    [![Publish to DockerHub](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-publish.yml)
-
+[![Docker Image CI](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-image.yml/badge.svg)](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-image.yml)    [![Publish to DockerHub](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-publish.yml/badge.svg?event=release)](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-publish.yml)
+<!-- [![Publish to DockerHub](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/ninerealmlabs/docker-certbot_only/actions/workflows/docker-publish.yml)
+ -->
 Certbot_Only is a docker image based off of [linuxserver's SWAG](https://linuxserver.io) with the goal to simplify the image to *only generate DNS certificates and maintain them* while leaving them accessible for other resources to utilize.
 Because Certbot_Only *only runs certbot and a monitoring cron task*, DNS validation is required.
 Further, in order to simplify the image, only Cloudflare DNS is currently implemented.
