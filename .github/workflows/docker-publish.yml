@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ninerealmlabs/${{ env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_NAME }}
           tags: |
             type=sha
             type=semver,pattern={{version}}
