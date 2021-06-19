@@ -8,7 +8,7 @@ ARG BUILD_DATE
 LABEL platform="${TARGETPLATFORM} - ${TARGETARCH}"
 LABEL build_date="${BUILD_DATE}"
 LABEL maintainer="ninerealmlabs"
-LABEL description="Docker image useful to run certbot and persist certificates"
+LABEL description="Docker image to run certbot to create and maintain SSL/TLS certs"
 
 ENV ONLY_SUBDOMAINS=false
 ENV PROPAGATION=60
