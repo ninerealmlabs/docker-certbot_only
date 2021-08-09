@@ -42,24 +42,24 @@ rm ${KEYPATH}/README
 # Convert pems to cert and key
 echo "Converting to tls.crt and tls.key ..."
 openssl crl2pkcs7 -nocrl \
-    -certfile "${KEYPATH}"/fullchain.pem | openssl pkcs7 -print_certs \
-    -out "${KEYPATH}"/tls.crt
+  -certfile "${KEYPATH}"/fullchain.pem | openssl pkcs7 -print_certs \
+  -out "${KEYPATH}"/tls.crt
 # openssl x509 -outform der -in fullchain.pem -out tls.crt
 # openssl pkey -outform der -in privkey.pem -out tls.key
 openssl rsa \
-    -in "${KEYPATH}"/privkey.pem \
-    -out "${KEYPATH}"/tls.key
+  -in "${KEYPATH}"/privkey.pem \
+  -out "${KEYPATH}"/tls.key
 
 sleep 1
 
 # Convert to pfx and priv-fullchain-bundle
 echo "Converting to pfx and priv-fullchain-bundle.pem ..."
 openssl pkcs12 -export \
-    -certfile "${KEYPATH}"/chain.pem \
-    -in "${KEYPATH}"/cert.pem \
-    -inkey "${KEYPATH}"/privkey.pem \
-    -out "${KEYPATH}"/privkey.pfx \
-    -passout pass:
+  -certfile "${KEYPATH}"/chain.pem \
+  -in "${KEYPATH}"/cert.pem \
+  -inkey "${KEYPATH}"/privkey.pem \
+  -out "${KEYPATH}"/privkey.pfx \
+  -passout pass:
 sleep 1
 
 cat "${KEYPATH}"/{privkey,fullchain}.pem > "${KEYPATH}"/priv-fullchain-bundle.pem

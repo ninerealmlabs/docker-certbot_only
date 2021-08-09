@@ -16,52 +16,52 @@ ENV STAGING=false
 
 # install supporting packages
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-        ca-certificates \
-        cron \
-        curl \
-        gcc \
-        libssl-dev \
-        libffi-dev \
-        nano \
-        openssl \
-        python3 \
-        python3-pip \
-        tzdata \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-              /tmp/* \
-              /var/tmp/*
+  && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+    ca-certificates \
+    cron \
+    curl \
+    gcc \
+    libssl-dev \
+    libffi-dev \
+    nano \
+    openssl \
+    python3 \
+    python3-pip \
+    tzdata \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
+    /tmp/* \
+    /var/tmp/*
 
 # s6 overlay
 COPY ./scripts/install-s6.sh /tmp/install-s6.sh
 RUN chmod +x /tmp/install-s6.sh \
-    && /tmp/install-s6.sh ${TARGETPLATFORM} \
-    && rm -rf /tmp/*
+  && /tmp/install-s6.sh ${TARGETPLATFORM} \
+  && rm -rf /tmp/*
 
 EXPOSE 80 443
 
 # install certbot
 RUN pip3 install \
-	pip \
- && pip3 install \
-	certbot \
-	certbot-dns-cloudflare \
+  pip \
+  && pip3 install \
+    certbot \
+    certbot-dns-cloudflare \
     cryptography \
-	requests \
- && for cleanfiles in *.pyc *.pyo; \
-        do \
-        find /usr/lib/python3.*  -iname "${cleanfiles}" -exec rm -f '{}' + \
-        ; done \
- && rm -rf \
-        /tmp/* \
-        /root/.cache
+    requests \
+  && for cleanfiles in *.pyc *.pyo; do
+    find /usr/lib/python3.* -iname "${cleanfiles}" -exec rm -f '{}' + \
+      ;
+  done \
+  && rm -rf \
+    /tmp/* \
+    /root/.cache
 
 RUN mkdir -p \
-    /app \
-    /config \
-    /defaults \
-    /letsencrypt
+  /app \
+  /config \
+  /defaults \
+  /letsencrypt
 
 # VOLUME /config
 # VOLUME /letsencrypt

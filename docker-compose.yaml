@@ -1,5 +1,5 @@
 # dockerfile for testing build only
-version: '3.7'
+version: "3.7"
 
 services:
   certbot:
@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        TARGETPLATFORM: 'linux/amd64'
+        TARGETPLATFORM: "linux/amd64"
         # TARGETPLATFORM: 'linux/arm64'
         # TARGETPLATFORM: 'linux/arm32/v7'
     image: certbot_only:test

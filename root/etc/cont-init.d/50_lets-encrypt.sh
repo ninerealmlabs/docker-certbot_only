@@ -17,33 +17,32 @@ STAGING=${STAGING}\\n
 DNSPLUGIN=${DNSPLUGIN:="cloudflare"}
 
 # Sanitize variables
-SANED_VARS=( EMAIL ONLY_SUBDOMAINS STAGING SUBDOMAINS TLD )
-for i in "${SANED_VARS[@]}"
-do
+SANED_VARS=(EMAIL ONLY_SUBDOMAINS STAGING SUBDOMAINS TLD)
+for i in "${SANED_VARS[@]}"; do
   export echo "$i"="${!i//\"/}"
   export echo "$i"="$(echo "${!i}" | tr '[:upper:]' '[:lower:]')"
 done
 
 # Check to make sure that the required variables are set
-[[ -z "${TLD}" ]] && \
-  echo "Please pass your Top Level Domain (TLD) as an environment variable in your docker run command. See README for more details." && \
-  sleep infinity
+[[ -z "${TLD}" ]] \
+  && echo "Please pass your Top Level Domain (TLD) as an environment variable in your docker run command. See README for more details." \
+  && sleep infinity
 
 # Make our folders and links
-mkdir -p /config/{log/letsencrypt,credentials,crontabs,deploy} 
+mkdir -p /config/{log/letsencrypt,credentials,crontabs,deploy}
 
 # Link letsencrypt logs
 ln -s /config/log/letsencrypt /var/log/letsencrypt
 
 # Copy dns default credentials
-[[ ! -f /config/credentials/cloudflare.ini ]] && \
-  echo "Copying default cloudflare credentials to /config/credentials.  UPDATE WITH TRUE CREDENTIALS!" && \
-	cp -n /defaults/credentials/cloudflare.ini /config/credentials/
+[[ ! -f /config/credentials/cloudflare.ini ]] \
+  && echo "Copying default cloudflare credentials to /config/credentials.  UPDATE WITH TRUE CREDENTIALS!" \
+  && cp -n /defaults/credentials/cloudflare.ini /config/credentials/
 
 # Copy crontab from defaults not already in /config
-[[ ! -f /config/crontabs/root ]] && \
-  echo "Copying default crontabs to /config..." && \
-	cp -n /defaults/crontabs/root /config/crontabs/
+[[ ! -f /config/crontabs/root ]] \
+  && echo "Copying default crontabs to /config..." \
+  && cp -n /defaults/crontabs/root /config/crontabs/
 # Link /config/crontabs
 echo "Linking /config/crontabs -> /etc/crontabs ..."
 rm -rf /etc/crontabs
@@ -53,10 +52,10 @@ ln -s /config/crontabs /etc/crontabs
 
 # Copy deploy hook defaults if needed
 # [[ -z "$(ls -A /letsencrypt/renewal-hooks/deploy)" ]] && \
-[[ ! -f /config/deploy/01_deploy-certs.sh ]] && \
-  echo "Copying default deploy hooks..." && \
-	cp -n /defaults/deploy/01_deploy-certs.sh /config/deploy/
-  chmod +x /config/deploy/*
+[[ ! -f /config/deploy/01_deploy-certs.sh ]] \
+  && echo "Copying default deploy hooks..." \
+  && cp -n /defaults/deploy/01_deploy-certs.sh /config/deploy/
+chmod +x /config/deploy/*
 # Link /config/deploy
 echo "Linking /config/deploy -> /etc/letsencrypt/renewal-hooks/deploy ..."
 rm -rf /etc/letsencrypt/renewal-hooks
@@ -134,7 +133,7 @@ echo "${VALIDATION:="DNS"} validation via ${DNSPLUGIN} plugin is selected"
 # NOTE: Skip, handled in deploy hook
 # # Set the symlink for key location
 # rm -rf /letsencrypt/keys
-if [ "${ONLY_SUBDOMAINS}" = "true" ] && [ ! "${SUBDOMAINS}" = "wildcard" ] ; then
+if [ "${ONLY_SUBDOMAINS}" = "true" ] && [ ! "${SUBDOMAINS}" = "wildcard" ]; then
   DOMAIN="$(echo "${SUBDOMAINS}" | tr ',' ' ' | awk '{print $1}').${TLD}"
   LINEAGE="/etc/letsencrypt/live/${DOMAIN}"
 #   ln -s /letsencrypt/live/"${DOMAIN}" /letsencrypt/keys
@@ -154,7 +153,7 @@ if [ ! "${TLD}" = "${ORIGTLD}" ] || [ ! "${SUBDOMAINS}" = "${ORIGSUBDOMAINS}" ] 
   # else
   #   ORIGDOMAIN="${ORIGTLD}"
   # fi
-if [ "${ORIGSTAGING}" = "true" ]; then
+  if [ "${ORIGSTAGING}" = "true" ]; then
     REV_ACMESERVER="https://acme-staging-v02.api.letsencrypt.org/directory"
   else
     REV_ACMESERVER="https://acme-v02.api.letsencrypt.org/directory"
@@ -194,4 +193,3 @@ if [ ! -f "/letsencrypt/fullchain.pem" ]; then
 else
   echo "Certificate exists; parameters unchanged"
 fi
-
